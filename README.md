@@ -1,0 +1,2 @@
+# FNStoreCore
+Example .Net Core
