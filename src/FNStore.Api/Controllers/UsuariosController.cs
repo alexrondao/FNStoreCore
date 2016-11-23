@@ -16,6 +16,12 @@ namespace FNStore.Api.Controllers
             _usuarioRepo = usuarioRep;
         }
 
+        [HttpGet]
+        public IActionResult Get() {
+            var usuarios = _usuarioRepo.Get();
+            return Ok(usuarios);
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody]RegistrarUsuarioCommand command) {
 
