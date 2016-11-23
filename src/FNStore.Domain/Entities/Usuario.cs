@@ -18,5 +18,12 @@ namespace FNStore.Domain.Entities
         public string Login { get; private set; }
         public string Senha { get; private set; }
         public bool Ativo { get; private set; }
+
+        public void Alterar(string login, string senha, bool ativo)
+        {
+            this.Login = login;
+            this.Senha = senha;
+            this.Ativo = ativo;
+        }
     }
 }

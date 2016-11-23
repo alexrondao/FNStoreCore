@@ -2,16 +2,16 @@
 using DomainNotificationHelperCore.Commands;
 using FNStore.Domain.Commands.UsuarioCommands;
 using FNStore.Domain.Contracts.Repositories;
-using FNStore.Domain.Entities;
 
 namespace FNStore.Service.UsuarioServices
 {
-    public class RegistrarUsuarioService : ServerCommand
+    public class AtualizarUsuarioService: ServerCommand
     {
-        private RegistrarUsuarioCommand _command;
+
+        private AtualizarUsuarioCommand _command;
         private IUsuarioRepository _repository;
 
-        public RegistrarUsuarioService(RegistrarUsuarioCommand command, IUsuarioRepository repository) : base(command)
+        public AtualizarUsuarioService(AtualizarUsuarioCommand command, IUsuarioRepository repository) : base(command)
         {
             _command = command;
             _repository = repository;
@@ -25,13 +25,15 @@ namespace FNStore.Service.UsuarioServices
             if (HasNotifications())
                 return;
 
-            var user = new Usuario(_command.Login, _command.Senha);
-            _repository.Add(user);
+            var user = _repository.Get(_command.Id);
+            user.Alterar(_command.Login, _command.Senha, _command.Ativo);
+            _repository.Update(user);
         }
 
         public void Validate()
         {
-            AddNotification(Assert.Length(_command.Login, 5, 20, "Login", "Login inválido"));
+            AddNotification(Assert.Length(_command.Senha, 5, 20, "Login", "Login inválido"));
         }
+
     }
 }

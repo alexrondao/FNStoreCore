@@ -1,6 +1,6 @@
 ﻿using DomainNotificationHelperCore.Commands;
 
-namespace FNStore.Domain.Commands
+namespace FNStore.Domain.Commands.UsuarioCommands
 {
     public class RegistrarUsuarioCommand : Command
     {
