@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[Usuario]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), 
+    [Login] VARCHAR(20) NOT NULL, 
+    [Senha] VARCHAR(20) NOT NULL, 
+    [Ativo] BIT NOT NULL, 
+    [DataCadastro] DATETIME NOT NULL,
+
+	CONSTRAINT [PK_dbo.Usuario] PRIMARY KEY CLUSTERED ([Id] ASC),
+)

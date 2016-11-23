@@ -35,11 +35,6 @@ namespace FNStore.Infra.Data.EF.Repositories
             _context.Set<T>().Remove(entity);
         }
 
-        public bool Save()
-        {
-            return _context.SaveChanges() > 0;
-        }
-
         public void Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;

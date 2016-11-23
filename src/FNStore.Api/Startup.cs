@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace FNStore.Api
 {
@@ -25,6 +27,22 @@ namespace FNStore.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc()
+                .AddJsonOptions(opt =>
+                {
+                    //var resolver = opt.SerializerSettings.ContractResolver;
+                    //if (resolver != null)
+                    //{
+                    //    var res = resolver as DefaultContractResolver;
+                    //    res.NamingStrategy = null;  // <<!-- this removes the camelcasing
+                    //}
+
+                    var jsonSettings = opt.SerializerSettings;
+                    jsonSettings.Formatting = Formatting.Indented;
+                    jsonSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    jsonSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+
             services.AddSingleton(Configuration);
             IoCConfiguration.Configure(services);
         }
@@ -37,11 +55,22 @@ namespace FNStore.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler(new ExceptionHandlerOptions
+                {
+                    ExceptionHandler = ctx => ctx.Response.WriteAsync("Algo errado")
+                });
+            }
+
+            app.UseMvcWithDefaultRoute();
+            app.UseMvc();
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                await context.Response.WriteAsync("Página não encontrada!");
             });
+
         }
     }
 }

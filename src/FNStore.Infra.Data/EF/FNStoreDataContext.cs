@@ -14,7 +14,7 @@ namespace FNStore.Infra.Data.EF
 
         public FNStoreDataContext(IConfigurationRoot config)
         {
-            _conn = config.GetSection("FNStoreConn").Value;
+            _conn = config["ConnectionStrings:FNStoreConn"];
 
             if (string.IsNullOrWhiteSpace(_conn))
             {
@@ -32,12 +32,46 @@ namespace FNStore.Infra.Data.EF
         {
             ClienteMap(modelBuilder);
             TelefoneMap(modelBuilder);
+            UsuarioMap(modelBuilder);
+        }
+
+        private void UsuarioMap(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>(user =>
+            {
+                user.ToTable(nameof(Usuario));
+                user.HasKey(c => c.Id);
+
+                user.Property(col => col.Id)
+                    .HasColumnName("Id").HasColumnType("uniqueidentifier")
+                    .ValueGeneratedOnAdd();
+
+                user.Property(col => col.DataCadastro)
+                    .HasColumnName("DataCadastro")
+                    .HasColumnType("datetime").IsRequired();
+
+                user.Property(col => col.Login)
+                    .HasColumnName("Login")
+                    .HasColumnType($"varchar(20)")
+                    .IsRequired();
+
+                user.Property(col => col.Senha)
+                    .HasColumnName("Senha")
+                    .HasColumnType($"varchar(20)")
+                    .IsRequired();
+
+                user.Property(col => col.Ativo)
+                    .HasColumnName("Ativo")
+                    .HasColumnType($"bit")
+                    .IsRequired();
+            });
         }
 
         private void TelefoneMap(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Telefone>(tel =>
             {
+                tel.ToTable(nameof(Telefone));
                 tel.HasKey(c => c.Id);
 
                 tel.Property(col => col.Id)
@@ -63,6 +97,8 @@ namespace FNStore.Infra.Data.EF
         {
             modelBuilder.Entity<Cliente>(cli =>
             {
+                cli.ToTable(nameof(Cliente));
+
                 cli.HasKey(c => c.Id);
 
                 cli.Property(col => col.Id)

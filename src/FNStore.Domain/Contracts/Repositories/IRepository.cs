@@ -10,7 +10,6 @@ namespace FNStore.Domain.Contracts.Repositories
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-        bool Save();
 
         IEnumerable<T> Get();
         T Get(Guid key);
